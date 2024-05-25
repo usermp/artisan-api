@@ -11,7 +11,10 @@ class ArtisanController extends Controller
     public function store(ArtisanRequest $request)
     {
         $validated = $request->validated();
-        Artisan::call($validated['command']);
-        return Artisan::output();
+        if(config("artisan-api-config.with_key"))
+        {
+            Artisan::call($validated['command']);
+            return Artisan::output();
+        }
     }
 }
