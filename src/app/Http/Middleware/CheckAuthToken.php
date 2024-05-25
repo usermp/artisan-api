@@ -1,6 +1,6 @@
 <?php
 
-namespace Usermp\ArtisanApi\app\Middleware;
+namespace Usermp\ArtisanApi\app\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
