@@ -1,6 +1,6 @@
 <?php
 
-namespace Usermp\LaravelLogin;
+namespace Usermp\ArtisanApi;
 
 use Illuminate\Support\ServiceProvider;
 
