@@ -1,6 +1,6 @@
 <?php
 
-namespace Usermp\ArtisanApi\app\Http\Controllers\Auth;
+namespace Usermp\ArtisanApi\app\Http\Controllers;
 
 use Illuminate\Routing\Controller; 
 use Illuminate\Support\Facades\Artisan;
