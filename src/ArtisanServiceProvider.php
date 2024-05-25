@@ -13,6 +13,8 @@ class ArtisanServiceProvider extends ServiceProvider
 
     public function register()
     {
-
+        $this->publishes([
+            __DIR__.'/config/artisanapi.php' => config_path('artisanapi.php'),
+        ], 'artisan-api-config');
     }
 }
