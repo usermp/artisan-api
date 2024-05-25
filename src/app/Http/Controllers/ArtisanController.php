@@ -13,7 +13,7 @@ class ArtisanController extends Controller
     {
         $validated = $request->validated();
         
-        if (config("artisan-api-config.with_key")) {
+        if (config("artisanapi.with_key")) {
             try {
                 Artisan::call($validated['command']);
                 $output = Artisan::output();
