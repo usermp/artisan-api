@@ -4,7 +4,7 @@ namespace Usermp\ArtisanApi\app\Http\Controllers;
 
 use Illuminate\Routing\Controller; 
 use Illuminate\Support\Facades\Artisan;
-use Usermp\ArtisanApi\app\Http\Requests\Auth\ArtisanRequest;
+use Usermp\ArtisanApi\app\Http\Requests\ArtisanRequest;
 
 class ArtisanController extends Controller
 {

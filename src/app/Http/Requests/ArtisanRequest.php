@@ -1,6 +1,6 @@
 <?php
 
-namespace Usermp\ArtisanApi\app\Http\Requests\Auth;
+namespace Usermp\ArtisanApi\app\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Usermp\ArtisanApi\app\Http\Requests\BaseRequest;
