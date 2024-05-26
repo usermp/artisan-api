@@ -1,6 +1,6 @@
 <?php
 
-namespace Usermp\ArtisanApi\app\Http\Middleware;
+namespace Usermp\ArtisanApi\App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
@@ -16,14 +16,13 @@ class CheckAuthToken
      */
     public function handle(Request $request, Closure $next)
     {
-        $authHeader = $request->header('Authorization');
-        
-        if (!$authHeader) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Authorization token is missing'
-            ], 401);
+        $useApiKey = config('artisanapi.with_key');
+        $apiKey = config('artisanapi.api_key');
+
+        if ($useApiKey && $request->header('Authorization') !== $apiKey) {
+            return 'Error: Authorization token is missing or invalid';
         }
+
         return $next($request);
     }
 }

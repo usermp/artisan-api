@@ -1,46 +1,33 @@
 <?php
 
-namespace Usermp\ArtisanApi\app\Http\Controllers;
+namespace Usermp\ArtisanApi\App\Http\Controllers;
 
-use Illuminate\Routing\Controller; 
+use Sentry\SentrySdk;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
-use Usermp\ArtisanApi\app\Http\Requests\ArtisanRequest;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Usermp\ArtisanApi\App\Http\Requests\ArtisanRequest;
 
 class ArtisanController extends Controller
 {
-    public function store(ArtisanRequest $request): JsonResponse
+    public function store(ArtisanRequest $request): string
     {
-        $authHeader = $request->header('Authorization');
-        if (!$authHeader) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Authorization token is missing'
-            ], 401);
-        }
-
         $validated = $request->validated();
-        if (config("artisanapi.with_key")) {
-            try {
-                Artisan::call($validated['command']);
-                $output = Artisan::output();
-                
-                return response()->json([
-                    'success' => true,
-                    'output' => $output
-                ], 200);
-            } catch (\Exception $e) {
-                return response()->json([
-                    'success' => false,
-                    'error' => $e->getMessage()
-                ], 500);
-            }
-        }
+        $allowedCommands = config('artisanapi.allowed_commands');
+        $command = explode(' ', $validated['command']);
 
-        return response()->json([
-            'success' => false,
-            'error' => 'Unauthorized access'
-        ], 403);
+        try {
+            if (in_array($command[0], $allowedCommands, true)) {
+                Artisan::call($command[0]);
+                return Artisan::output();
+            }
+
+            return 'Error: This command is not allowed';
+        } catch (\Exception $e) {
+            if (!SentrySdk::getCurrentHub()->getClient()) {
+                SentrySdk::init();
+            }
+            SentrySdk::getCurrentHub()->captureException($e);
+            return 'Error: An error occurred while processing the command';
+        }
     }
 }
