@@ -1,11 +1,11 @@
 <?php
 
-namespace Usermp\ArtisanApi\App\Http\Controllers;
+namespace Usermp\ArtisanApi\app\Http\Controllers;
 
 use Sentry\SentrySdk;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
-use Usermp\ArtisanApi\App\Http\Requests\ArtisanRequest;
+use Usermp\ArtisanApi\app\Http\Requests\ArtisanRequest;
 
 class ArtisanController extends Controller
 {
