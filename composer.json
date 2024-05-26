@@ -1,6 +1,6 @@
 {
     "name": "usermp/artisan-api",
-    "description": "test test",
+    "description": "artisan-api is a Laravel package that allows you to execute Artisan commands via an API route",
     "license": "MIT",
     "autoload": {
         "psr-4": {
