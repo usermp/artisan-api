@@ -13,21 +13,27 @@ class ArtisanController extends Controller
     {
         $validated = $request->validated();
         $allowedCommands = config('artisanapi.allowed_commands');
-        $command = explode(' ', $validated['command']);
+        $commandParts = explode(' ', $validated['command']);
+        $command = $commandParts[0] ?? null;
+
+        if (!$command || !in_array($command, $allowedCommands, true)) {
+            return 'Error: Command is not allowed or invalid';
+        }
 
         try {
-            if (in_array($command[0], $allowedCommands, true)) {
-                Artisan::call($command[0]);
-                return Artisan::output();
-            }
-
-            return 'Error: This command is not allowed';
+            Artisan::call($command, array_slice($commandParts, 1));
+            return Artisan::output();
         } catch (\Exception $e) {
-            if (!SentrySdk::getCurrentHub()->getClient()) {
-                SentrySdk::init();
-            }
-            SentrySdk::getCurrentHub()->captureException($e);
-            return 'Error: An error occurred while processing the command';
+            $this->captureSentryException($e);
+            return 'Error: Failed to execute the command';
         }
+    }
+
+    private function captureSentryException(\Exception $e): void
+    {
+        if (!SentrySdk::getCurrentHub()->getClient()) {
+            SentrySdk::init();
+        }
+        SentrySdk::getCurrentHub()->captureException($e);
     }
 }
