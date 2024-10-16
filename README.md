@@ -10,7 +10,7 @@ To install the artisan-api package, you can use Composer. Run the following comm
 composer require usermp/artisan-api
 ```
 
-After installing the package, you need to register the ArtisanServiceProvider in your Laravel application. To do this, add the service provider to the providers array in your ```config/app.php``` file:
+After installing the package, you need to register the ArtisanServiceProvider in your Laravel application. To do this, add the service provider to the providers array in your ```bootstrap/providers.php``` file:
 
 ```php
 'providers' => [
