@@ -13,10 +13,9 @@ composer require usermp/artisan-api
 After installing the package, you need to register the ArtisanServiceProvider in your Laravel application. To do this, add the service provider to the providers array in your ```bootstrap/providers.php``` file:
 
 ```php
-'providers' => [
-    // Other service providers...
-
-    Usermp\ArtisanApi\ArtisanServiceProvider::class,
+return [
+    ...
+     Usermp\ArtisanApi\ArtisanServiceProvider::class,
 ],
 ```
 
