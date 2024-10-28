@@ -4,6 +4,7 @@ namespace Usermp\ArtisanApi\app\Http\Controllers;
 
 use Sentry\SentrySdk;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Artisan;
 use Usermp\ArtisanApi\app\Http\Requests\ArtisanRequest;
 
@@ -13,15 +14,20 @@ class ArtisanController extends Controller
     {
         $validated = $request->validated();
         $allowedCommands = config('artisanapi.allowed_commands');
+        
+        // Parse command and arguments
         $commandParts = explode(' ', $validated['command']);
-        $command = $commandParts[0] ?? null;
+        $command = array_shift($commandParts);
+        $params = ['name' => $commandParts[0] ?? null];
 
+        // Validate command
         if (!$command || !in_array($command, $allowedCommands, true)) {
             return 'Error: Command is not allowed or invalid';
         }
 
         try {
-            Artisan::call($command, array_slice($commandParts, 1));
+            // Execute command with params as an associative array
+            Artisan::call($command, $params);
             return Artisan::output();
         } catch (\Exception $e) {
             $this->captureSentryException($e);
