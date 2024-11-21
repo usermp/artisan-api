@@ -14,11 +14,10 @@ class ArtisanController extends Controller
     {
         $validated = $request->validated();
         $allowedCommands = config('artisanapi.allowed_commands');
-        
+
         // Parse command and arguments
         $commandParts = explode(' ', $validated['command']);
         $command = array_shift($commandParts);
-        $params = ['name' => $commandParts[0] ?? null];
 
         // Validate command
         if (!$command || !in_array($command, $allowedCommands, true)) {
@@ -26,14 +25,15 @@ class ArtisanController extends Controller
         }
 
         try {
-            // Execute command with params as an associative array
-            Artisan::call($command, $params);
+            // Execute command with arguments
+            Artisan::call($command, $commandParts);
             return Artisan::output();
         } catch (\Exception $e) {
             $this->captureSentryException($e);
             return 'Error: Failed to execute the command';
         }
     }
+
 
     private function captureSentryException(\Exception $e): void
     {
